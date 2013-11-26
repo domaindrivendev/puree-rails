@@ -1,0 +1,27 @@
+<% if namespaced? -%>
+require '<%= namespaced_file_path %>/domain'
+require '<%= namespaced_file_path %>/persistence'
+<% else -%>
+require 'domain'
+require 'persistence'
+<% end -%>
+
+<% module_namespacing do -%>
+class Create<%= class_name %> < ActiveRecord::Base
+  has_no_table
+<% attributes.each do |attr| -%>
+  column :<%= attr.name %>, :<%= attr.type %>
+<% end -%>
+
+  attr_accessible <%= attributes.map { |attr| ":#{attr.name}" }.join(', ') %>
+  include Domain
+  include Persistence
+
+  def submit
+    return false if invalid?
+    
+    <%= file_name %> = Domain::<%= class_name %>.new(<%= attributes.map { |attr| "#{attr.name}" }.join(', ') %>)
+    <%= file_name %>_repository.add(<%= file_name %>)
+  end
+end
+<% end -%>

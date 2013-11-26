@@ -1,0 +1,11 @@
+<% module_namespacing do -%>
+module Domain
+
+  class <%= class_name %>
+
+    def initialize(<%= attributes.map { |a| a.name }.join(', ') %>)
+    end
+  end
+
+end
+<% end -%>

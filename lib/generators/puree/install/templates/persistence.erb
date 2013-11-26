@@ -1,0 +1,10 @@
+
+<% if namespace.nil? -%>
+module Persistence
+end
+<% else -%>
+module <%= namespace_class_name %>
+  module Persistence
+  end
+end
+<% end -%>

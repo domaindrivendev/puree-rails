@@ -1,0 +1,10 @@
+
+<% if namespace.nil? -%>
+module Domain
+end
+<% else -%>
+module <%= namespace_class_name %>
+  module Domain
+  end
+end
+<% end -%>

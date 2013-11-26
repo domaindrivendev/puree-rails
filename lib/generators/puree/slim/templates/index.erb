@@ -1,0 +1,16 @@
+article
+  heading
+    h2 <%= class_name.pluralize.humanize %>
+  table
+    thead
+      tr
+      <%- attributes.each do |attr| -%>
+        th <%= attr.name.humanize %>
+      <%- end %>
+    tbody
+    - @<%= plural_file_name %>.each do |item|
+      tr
+        td = item
+  ul.links
+    li
+      = link_to 'New', new_<%= file_name %>_path 

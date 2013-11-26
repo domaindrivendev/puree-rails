@@ -1,0 +1,11 @@
+require 'puree/repository'
+
+<% if namespace.nil? -%>
+module Integration
+end
+<% else -%>
+module <%= namespace_class_name %>
+  module Integration
+  end
+end
+<% end -%>

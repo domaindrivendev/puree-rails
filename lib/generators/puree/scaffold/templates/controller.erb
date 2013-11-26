@@ -1,0 +1,29 @@
+<% if namespaced? -%>
+require_dependency "<%= namespaced_file_path %>/application_controller"
+
+<% end -%>
+<% module_namespacing do -%>
+class <%= class_name.pluralize %>Controller < ApplicationController
+
+  def index
+    @<%= plural_file_name %> = <%= class_name %>.all
+  end
+
+  def new
+    @create_<%= file_name %> = Create<%= class_name %>.new
+  end
+
+  def create
+    @create_<%= file_name %> = Create<%= class_name %>.new(params[:create_<%= file_name %>])
+    if @create_<%= file_name %>.submit
+      return redirect_to <%= plural_file_name %>_path
+    end
+
+    render :new
+  end
+
+  def show
+    @<%= file_name %> = <%= class_name %>.find(params[:id])
+  end
+end
+<% end -%>
