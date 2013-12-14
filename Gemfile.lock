@@ -5,6 +5,11 @@ PATH
       activerecord-tableless
       rails (~> 3.2.14)
 
+PATH
+  remote: ../puree
+  specs:
+    puree (0.0.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -112,6 +117,7 @@ PLATFORMS
 DEPENDENCIES
   generator_spec
   jquery-rails
+  puree!
   puree-rails!
   rspec-rails
   sqlite3

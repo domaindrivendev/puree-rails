@@ -1,10 +1,25 @@
+require 'puree'
+
 <% module_namespacing do -%>
 module Domain
 
-  class <%= class_name %>
+  class <%= class_name %> < Puree::EventSource
+    attr_reader <%= attributes.map { |attr| ":#{attr.name}" }.join(', ') %>
 
     def initialize(<%= attributes.map { |a| a.name }.join(', ') %>)
+<% attributes.each do |attribute| -%>
+      raise ArgumentError.new('<%= attribute.name %> required') if <%= attribute.name %>.nil?
+<% end -%>
+
+      signal_event :<%= file_name %>_created,
+        <%= attributes.map { |a| "#{a.name}: #{a.name}" }.join(', ') %>
     end
+
+    apply_event :<%= file_name %>_created do |args|
+<% attributes.each do |attribute| -%>
+      @<%= attribute.name %> = args[:<%= attribute.name %>]
+<% end -%>
+    end 
   end
 
 end

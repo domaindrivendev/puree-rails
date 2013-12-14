@@ -22,6 +22,8 @@ class Create<%= class_name %> < ActiveRecord::Base
     
     <%= file_name %> = Domain::<%= class_name %>.new(<%= attributes.map { |attr| "#{attr.name}" }.join(', ') %>)
     <%= file_name %>_repository.add(<%= file_name %>)
+
+    return true
   end
 end
 <% end -%>

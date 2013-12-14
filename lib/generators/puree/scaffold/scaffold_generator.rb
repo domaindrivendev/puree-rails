@@ -23,8 +23,17 @@ module Puree
     end
 
     def create_repository_accessor
-      # method_body = "\ndef #{file_name}_repository\nend\n"
-      # inject_into_file(persistence_module_path, method_body, after: 'module Persistence')
+      indent = namespace.nil? ? "/t" : "/t/t"
+      inject_into_file(persistence_module_path, after: "module Persistence\n") do <<-EOT.gsub(/^      /, '')
+
+        def #{file_name}_repository
+          @#{file_name}_repository ||= Puree::Repository.for(#{class_name},
+            lambda { |#{file_name}| #{file_name}.id },
+            PureeRails::ActiveRecordEventStore.instance,
+            Puree::EventDispatcher.instance)
+        end
+      EOT
+      end
     end
 
     def create_view_model_files
