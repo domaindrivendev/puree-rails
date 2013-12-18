@@ -8,20 +8,16 @@ module PureeGeneratorHelper
     @view_models_path ||= File.join('app/models', namespace_file_name)
   end
 
+  def listeners_path
+    @listeners_path ||= File.join('app/listeners', namespace_file_name)
+  end
+
   def domain_path
     @domain_path ||= File.join('lib', namespace_file_name, 'domain')
   end
 
   def domain_module_path
     "#{domain_path}.rb"
-  end
-
-  def integration_path
-    @integration_path ||= File.join('lib', namespace_file_name, 'integration')
-  end
-
-  def integration_module_path
-    "#{integration_path}.rb"
   end
 
   def persistence_path

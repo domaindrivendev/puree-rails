@@ -1,0 +1,9 @@
+<% module_namespacing do -%>
+class <%= class_name %>Denormalizer < Puree::EventListener
+  on_event :<%= file_name %>_created do |args|
+    <%= class_name %>.create(
+      <%= attributes.map { |a| "#{a.name}: args[:#{a.name}]" }.join(', ') %>
+    )
+  end
+end
+<% end -%>

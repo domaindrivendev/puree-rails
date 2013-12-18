@@ -4,7 +4,10 @@ require 'puree'
 module Domain
 
   class <%= class_name %> < Puree::EventSource
-    attr_reader <%= attributes.map { |attr| ":#{attr.name}" }.join(', ') %>
+    identifier :<%= attributes.first.name %>
+<% if attributes.length > 1 -%>
+    attr_reader <%= attributes.drop(1).map { |attr| ":#{attr.name}" }.join(', ') %>
+<% end -%>
 
     def initialize(<%= attributes.map { |a| a.name }.join(', ') %>)
 <% attributes.each do |attribute| -%>

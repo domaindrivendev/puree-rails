@@ -7,13 +7,20 @@ module Puree
 
     include PureeGeneratorHelper
 
+    def create_listeners_dir
+      empty_directory(listeners_path)
+    end
+
+    def add_initializer
+      template('initializer.erb', "config/initializers/puree-rails.rb")
+    end
+
     def create_domain_module
       empty_directory(domain_path)
       template('domain.erb', domain_module_path)
     end
 
     def create_persistence_module
-      empty_directory(persistence_path)
       template('persistence.erb', persistence_module_path)
     end
 

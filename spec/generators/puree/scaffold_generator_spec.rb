@@ -30,16 +30,16 @@ describe Puree::ScaffoldGenerator do
     end
   end
   
-  context 'When no arguments are provided' do
+  context 'when no arguments are provided, ' do
     it 'should display usage information' do
       expect { generator }.to raise_error(Thor::RequiredArgumentMissingError)
     end
   end
 
-  context 'When a resource name and attributes are provided' do
+  context 'when a resource name and attributes are provided, ' do
     before(:all) { run_generator %w(conference id:integer name:string --template-engine=slim --skip-test-framework) }
 
-    it 'should create a resource route' do
+    it 'should add a route' do
       assert_file('config/routes.rb') do |content|
         assert_match(/resources :conferences/, content)
       end
@@ -56,7 +56,7 @@ describe Puree::ScaffoldGenerator do
       end
     end
 
-    it 'should add an aggregate root to the domain model' do
+    it 'should add an aggregate to the domain model' do
       assert_file('lib/domain/conference.rb') do |content|
         assert_match(/class Conference/, content)
         assert_match(/def initialize\(id, name\)/, content)
@@ -67,9 +67,9 @@ describe Puree::ScaffoldGenerator do
       end
     end
 
-    it 'should add a repository accessor to the persistence module' do
+    it 'should wire up a repository for the aggregate' do
       assert_file('lib/persistence.rb') do |content|
-        assert_method(:conference_repository, content)
+        assert_match('def conference_repository', content)
       end
     end
 
@@ -77,7 +77,7 @@ describe Puree::ScaffoldGenerator do
       assert_file('app/models/create_conference.rb') do |content|
         assert_match(/class CreateConference/, content)
       end
-    end
+    end 
 
     it 'should invoke the orm generator to add a record to the view model' do
       assert_file('app/models/conference.rb') do |content|
@@ -95,6 +95,12 @@ describe Puree::ScaffoldGenerator do
     it 'should invoke the template engine generator to add views' do
       assert_file('app/views/conferences/index.html.slim')
       assert_file('app/views/conferences/new.html.slim')
+    end
+
+    it 'should add a denormalizer for projecting to the view model' do
+      assert_file('app/listeners/conference_denormalizer.rb') do |content|
+        assert_match(/class ConferenceDenormalizer < Puree::EventListener/, content)
+      end
     end
   end
 end

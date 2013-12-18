@@ -10,6 +10,14 @@ describe Puree::InstallGenerator do
     run_generator
   end
 
+  it "should create an app folder for event listeners" do
+    assert_directory('app/listeners')
+  end
+
+  it "should add an initializer for wiring up event listeners" do
+    assert_file('config/initializers/puree-rails.rb')
+  end
+
   it "should create a domain module" do
     assert_directory('lib/domain')
     assert_file('lib/domain.rb') do |content|
@@ -17,7 +25,6 @@ describe Puree::InstallGenerator do
   end
 
   it "should create a persistence module" do
-    assert_directory('lib/persistence')
     assert_file('lib/persistence.rb') do |content|
     end
   end

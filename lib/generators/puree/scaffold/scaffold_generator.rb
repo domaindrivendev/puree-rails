@@ -3,41 +3,45 @@ require 'generators/puree/puree_generator_helper'
 module Puree
   class ScaffoldGenerator < Rails::Generators::NamedBase
     source_root File.expand_path('../templates', __FILE__)
-    argument :attributes, :type => :array, :default => [], :banner => 'field[:type][:index] field[:type][:index]'
+    argument :attributes, :type => :array, :default => ['id:integer'], :banner => 'field[:type][:index] field[:type][:index]'
 
     include PureeGeneratorHelper
 
-    def create_route
+    def add_route
       route("resources :#{plural_file_name}")
     end
 
-    def create_controller 
+    def add_controller 
       template('controller.erb', "#{controllers_path}/#{plural_file_name}_controller.rb")
     end
 
-    def create_aggregate_root
+    def add_aggregate
       file_path = "#{domain_path}/#{file_name}.rb"
       template('aggregate_root.erb', file_path)
 
-      prepend_file(domain_module_path, "require_relative 'domain\/#{file_name}'\n")
+      prepend_file(domain_module_path, "require_relative 'domain\/#{file_name}'\n\n")
     end
 
-    def create_repository_accessor
-      indent = namespace.nil? ? "/t" : "/t/t"
-      inject_into_file(persistence_module_path, after: "module Persistence\n") do <<-EOT.gsub(/^      /, '')
+    def add_repository
+      indent = namespace.nil? ? "\t" : "\t\t"
+      inject_into_file(persistence_module_path, after: "module Persistence\n") do <<-EOT.gsub(/^      /, indent)
 
-        def #{file_name}_repository
-          @#{file_name}_repository ||= Puree::Repository.for(#{class_name},
-            lambda { |#{file_name}| #{file_name}.id },
-            PureeRails::ActiveRecordEventStore.instance,
-            Puree::EventDispatcher.instance)
-        end
+      def #{file_name}_repository
+        @#{file_name}_repository ||= Puree::Repository.for(
+          Domain::#{class_name.split('::').last},
+          PureeRails::ActiveRecordEventStore.instance,
+          Puree::EventDispatcher.instance)
+      end
       EOT
       end
     end
 
-    def create_view_model_files
-      template('create_form.erb', "#{view_models_path}/create_#{file_name}.rb")
+    def add_create_command
+      template('create_command.erb', "#{view_models_path}/create_#{file_name}.rb")
+    end
+
+    def add_denormalizer
+      template('denormalizer.erb', "#{listeners_path}/#{file_name}_denormalizer.rb")
     end
 
     hook_for :template_engine, :in => :puree
