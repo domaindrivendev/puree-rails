@@ -16,9 +16,20 @@ module PureeRails
     end
 
     def get_events_for(stream_name)
+      stream = EventStream.where(name: stream_name).first!
+      stream.event_records.map do |record|
+        Puree::Event.new(record.name.to_sym, record.args)
+      end    
     end
 
     def append_events_to(stream_name, events)
+      stream = EventStream.where(name: stream_name).first!
+      stream.transaction do
+        events.each do |event|
+          stream.event_records.new(name: event.name, args: event.args)
+        end
+        stream.save
+      end  
     end
   end
 

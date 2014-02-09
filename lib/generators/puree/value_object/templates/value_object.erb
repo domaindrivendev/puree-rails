@@ -1,0 +1,36 @@
+require 'puree'
+
+<% module_namespacing do -%>
+module Domain
+
+  class <%= class_name %>
+<% if attributes.length > 1 -%>
+    attr_reader <%= attributes.map { |attr| ":#{attr.name}" }.join(', ') %>
+<% end -%>
+
+    def initialize(<%= attributes.map { |a| a.name }.join(', ') %>)
+<% attributes.each do |attribute| -%>
+      raise ArgumentError.new('<%= attribute.name %> required') if <%= attribute.name %>.nil?
+<% end -%>
+
+<% attributes.each do |attribute| -%>
+      @<%= attribute.name %> = <%= attribute.name %>
+<% end -%>
+    end
+
+    def ==(other)
+      self.class == other.class &&
+<% attributes.each_with_index do |attribute, index| -%>
+      @<%= attribute.name %> == other.<%= attribute.name %><% if index < (attributes.length-1) %> &&<% end %>
+<% end -%>
+    end
+    
+    alias :eql? :==
+
+    def hash
+      [<%= attributes.map { |attr| "@#{attr.name}" }.join(', ') %>].hash
+    end
+  end
+
+end
+<% end -%>

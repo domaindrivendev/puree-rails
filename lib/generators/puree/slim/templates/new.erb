@@ -1,9 +1,9 @@
-article
-  heading
+section
+  header
     h2 New <%= class_name.humanize %>
   = form_for @create_<%= file_name %>, url: <%= plural_file_name %>_path do |f|
     ol.fields
-    <%- attributes.each do |attr| -%>
+    <%- attributes.drop(1).each do |attr| -%>
       li
         = f.label :<%= attr.name %>
         = f.text_field :<%= attr.name %>

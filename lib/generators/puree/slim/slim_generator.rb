@@ -9,6 +9,7 @@ class Puree::SlimGenerator < Rails::Generators::NamedBase
   def create_view_files
     template('index.erb', File.join(view_dir, plural_file_name, 'index.html.slim'))
     template('new.erb', File.join(view_dir, plural_file_name, 'new.html.slim'))
+    template('show.erb', File.join(view_dir, plural_file_name, 'show.html.slim'))
   end
 
   private

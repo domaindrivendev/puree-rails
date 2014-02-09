@@ -1,0 +1,48 @@
+<% if namespace.nil? -%>
+require 'domain'
+require 'persistence'
+<% else -%>
+require '<%= namespace_file_name %>/domain'
+require '<%= namespace_file_name %>/persistence'
+<% end -%>
+
+<% if namespace.nil? -%>
+class Command < ActiveRecord::Base  
+  has_no_table
+  
+  def self.field(name, sql_type)
+    column(name, sql_type)
+  end
+
+  include Domain
+  include Persistence
+  
+  def submit
+    return false if invalid?
+
+    do_submit
+
+    return true
+  end
+end
+<% else -%>
+module <%= namespace_class_name %>
+
+  class Command < ActiveRecord::Base
+    has_no_table
+
+    def self.field(name, sql_type)
+      column(name, sql_type)
+    end
+    
+    include Domain
+    include Persistence
+    
+    def submit
+      return false if invalid?
+      do_submit
+      return true
+    end
+  end
+end
+<% end -%>

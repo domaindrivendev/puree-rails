@@ -29,8 +29,18 @@ describe Puree::InstallGenerator do
     end
   end
 
+  it 'should add a base command to the view model' do
+    assert_file('app/models/command.rb') do |content|
+      assert_match(/class Command/, content)
+    end
+  end
+
   it "should install migrations for the event store" do
     assert_file('db/migrate/20131201000000_create_event_streams.rb')
     assert_file('db/migrate/20131201000001_create_event_records.rb')
+  end
+
+  it "should install migrations for the id generator" do
+    assert_file('db/migrate/20131201000002_create_id_counters.rb')
   end
 end

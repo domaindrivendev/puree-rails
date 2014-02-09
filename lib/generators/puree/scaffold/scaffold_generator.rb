@@ -1,6 +1,7 @@
 require 'generators/puree/puree_generator_helper'
 
 module Puree
+  
   class ScaffoldGenerator < Rails::Generators::NamedBase
     source_root File.expand_path('../templates', __FILE__)
     argument :attributes, :type => :array, :default => ['id:integer'], :banner => 'field[:type][:index] field[:type][:index]'
@@ -19,7 +20,7 @@ module Puree
       file_path = "#{domain_path}/#{file_name}.rb"
       template('aggregate_root.erb', file_path)
 
-      prepend_file(domain_module_path, "require_relative 'domain\/#{file_name}'\n\n")
+      prepend_file(domain_module_path, "require_relative 'domain\/#{file_name}'\n")
     end
 
     def add_repository
@@ -29,8 +30,9 @@ module Puree
       def #{file_name}_repository
         @#{file_name}_repository ||= Puree::Repository.for(
           Domain::#{class_name.split('::').last},
-          PureeRails::ActiveRecordEventStore.instance,
-          Puree::EventDispatcher.instance)
+          id_generator,
+          event_store,
+          event_dispatcher)
       end
       EOT
       end

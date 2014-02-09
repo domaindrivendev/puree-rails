@@ -1,5 +1,5 @@
-article
-  heading
+section
+  header
     h2 <%= class_name.pluralize.humanize %>
   table
     thead
@@ -7,12 +7,15 @@ article
 <%- attributes.each do |attr| -%>
         th <%= attr.name.humanize %>
 <%- end %>
+        th
     tbody
-      - @<%= plural_file_name %>.each do |item|
+      - @<%= plural_file_name %>.each do |<%= file_name %>|
         tr
 <%- attributes.each do |attr| -%>
-          td = item.<%= attr.name %>
+          td = <%= file_name %>.<%= attr.name %>
 <%- end %>
-  ul.links
+          td
+            = link_to 'View', <%= file_name %>
+  ul.actions
     li
-      = link_to 'New', new_<%= file_name %>_path 
+      = link_to 'New', new_<%= file_name %>_path

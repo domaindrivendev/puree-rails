@@ -1,0 +1,9 @@
+section
+  header
+    h2 View <%= class_name.humanize %>
+  dl
+<%- attributes.each do |attr| -%>
+    dt <%= attr.name.humanize %>
+    dd
+      = @<%= file_name %>.<%= attr.name %>
+<%- end -%>

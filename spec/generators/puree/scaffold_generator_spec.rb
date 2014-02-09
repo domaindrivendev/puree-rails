@@ -58,7 +58,7 @@ describe Puree::ScaffoldGenerator do
 
     it 'should add an aggregate to the domain model' do
       assert_file('lib/domain/conference.rb') do |content|
-        assert_match(/class Conference/, content)
+        assert_match(/class Conference < Puree::EventSource/, content)
         assert_match(/def initialize\(id, name\)/, content)
       end
       
@@ -75,7 +75,7 @@ describe Puree::ScaffoldGenerator do
 
     it 'should add a create command to the view model' do
       assert_file('app/models/create_conference.rb') do |content|
-        assert_match(/class CreateConference/, content)
+        assert_match(/class CreateConference < Command/, content)
       end
     end 
 

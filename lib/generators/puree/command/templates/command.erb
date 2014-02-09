@@ -1,0 +1,14 @@
+<% module_namespacing do -%>
+class <%= class_name %> < Command
+<% attributes.each do |attr| -%>
+  field :<%= attr.name %>, :<%= attr.type %>
+<% end -%>
+
+  attr_accessible <%= attributes.map { |a| ":#{a.name}" }.join(', ') %>
+
+  def do_submit
+
+    # Call into domain model here ...
+  end
+end
+<% end -%>
