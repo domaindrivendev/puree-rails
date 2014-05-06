@@ -1,7 +1,7 @@
 section
   header
     h2 New <%= class_name.humanize %>
-  = form_for @create_<%= file_name %>, url: <%= plural_file_name %>_path do |f|
+  = form_for @new_<%= file_name %>_form, url: <%= plural_file_name %>_path do |f|
     ol.fields
     <%- attributes.drop(1).each do |attr| -%>
       li

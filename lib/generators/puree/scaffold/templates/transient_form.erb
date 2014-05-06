@@ -1,12 +1,13 @@
 <% module_namespacing do -%>
-class Create<%= class_name %> < Command
+
+class New<%= class_name %>Form < TransientForm
 <% attributes.each do |attr| -%>
   field :<%= attr.name %>, :<%= attr.type %>
 <% end -%>
 
   attr_accessible <%= attributes.map { |a| ":#{a.name}" }.join(', ') %>
 
-  def do_submit
+  def on_submit
     <%= file_name %> = Domain::<%= class_name %>.new(
 <% if attributes.length == 1 -%>
       <%= file_name %>_repository.next_id
@@ -18,4 +19,5 @@ class Create<%= class_name %> < Command
     <%= file_name %>_repository.add(<%= file_name %>)
   end
 end
+
 <% end -%>

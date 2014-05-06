@@ -38,8 +38,8 @@ module Puree
       end
     end
 
-    def add_create_command
-      template('create_command.erb', "#{view_models_path}/create_#{file_name}.rb")
+    def add_form
+      template('transient_form.erb', "#{view_models_path}/new_#{file_name}_form.rb")
     end
 
     def add_denormalizer

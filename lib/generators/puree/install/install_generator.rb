@@ -24,8 +24,8 @@ module Puree
       template('persistence.erb', persistence_module_path)
     end
 
-    def add_base_command
-      template('command.erb', "#{view_models_path}/command.rb")
+    def add_form_base_classe
+      template('transient_form.erb', "#{view_models_path}/transient_form.rb")
     end
 
     def copy_event_store_migrations

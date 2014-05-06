@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'generators/puree/command/command_generator'
+require 'generators/puree/form_model/form_model_generator'
 
-describe Puree::CommandGenerator do
+describe Puree::FormModelGenerator do
   include GeneratorSpec::TestCase
   destination File.expand_path("../tmp", __FILE__)  
 
@@ -26,9 +26,9 @@ describe Puree::CommandGenerator do
   context 'when a name and fields are provided, ' do
     before(:all) { run_generator %w(call_for_submissions conference_id:integer) }
 
-    it 'should add the command to the view model' do
-      assert_file('app/models/call_for_submissions.rb') do |content|
-        assert_match(/class CallForSubmissions < Command/, content)
+    it 'should add a form to the view model' do
+      assert_file('app/models/call_for_submissions_form.rb') do |content|
+        assert_match(/class CallForSubmissionsForm < TransientForm/, content)
       end
     end
   end

@@ -29,9 +29,9 @@ describe Puree::InstallGenerator do
     end
   end
 
-  it 'should add a base command to the view model' do
-    assert_file('app/models/command.rb') do |content|
-      assert_match(/class Command/, content)
+  it 'should add a form base class to the view model' do
+    assert_file('app/models/transient_form.rb') do |content|
+      assert_match(/class TransientForm/, content)
     end
   end
 

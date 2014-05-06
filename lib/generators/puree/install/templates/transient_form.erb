@@ -7,7 +7,7 @@ require '<%= namespace_file_name %>/persistence'
 <% end -%>
 
 <% if namespace.nil? -%>
-class Command < ActiveRecord::Base  
+class TransientForm < ActiveRecord::Base  
   has_no_table
   
   def self.field(name, sql_type)
@@ -19,16 +19,14 @@ class Command < ActiveRecord::Base
   
   def submit
     return false if invalid?
-
-    do_submit
-
-    return true
+    on_submit
+    true
   end
 end
 <% else -%>
 module <%= namespace_class_name %>
 
-  class Command < ActiveRecord::Base
+  class TransientForm < ActiveRecord::Base
     has_no_table
 
     def self.field(name, sql_type)
@@ -40,9 +38,10 @@ module <%= namespace_class_name %>
     
     def submit
       return false if invalid?
-      do_submit
-      return true
+      on_submit
+      true
     end
   end
+  
 end
 <% end -%>

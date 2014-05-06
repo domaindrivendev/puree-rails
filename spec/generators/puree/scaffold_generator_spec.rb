@@ -73,11 +73,11 @@ describe Puree::ScaffoldGenerator do
       end
     end
 
-    it 'should add a create command to the view model' do
-      assert_file('app/models/create_conference.rb') do |content|
-        assert_match(/class CreateConference < Command/, content)
+    it 'should add a form to the view model' do
+      assert_file('app/models/new_conference_form.rb') do |content|
+        assert_match(/class NewConferenceForm < TransientForm/, content)
       end
-    end 
+    end
 
     it 'should invoke the orm generator to add a record to the view model' do
       assert_file('app/models/conference.rb') do |content|

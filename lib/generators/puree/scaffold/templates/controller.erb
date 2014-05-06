@@ -3,6 +3,7 @@ require_dependency "<%= namespaced_file_path %>/application_controller"
 
 <% end -%>
 <% module_namespacing do -%>
+
 class <%= class_name.pluralize %>Controller < ApplicationController
 
   def index
@@ -10,12 +11,12 @@ class <%= class_name.pluralize %>Controller < ApplicationController
   end
 
   def new
-    @create_<%= file_name %> = Create<%= class_name %>.new
+    @new_<%= file_name %>_form = New<%= class_name %>Form.new
   end
 
   def create
-    @create_<%= file_name %> = Create<%= class_name %>.new(params[:create_<%= file_name %>])
-    if @create_<%= file_name %>.submit
+    @new_<%= file_name %>_form = New<%= class_name %>Form.new(params[:new_<%= file_name %>_form])
+    if @new_<%= file_name %>_form.submit
       return redirect_to <%= plural_file_name %>_path
     end
 
@@ -26,4 +27,5 @@ class <%= class_name.pluralize %>Controller < ApplicationController
     @<%= file_name %> = <%= class_name %>.find(params[:id])
   end
 end
+
 <% end -%>
